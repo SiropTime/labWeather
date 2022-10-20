@@ -10,12 +10,7 @@ WeatherData::WeatherData()
     getData();
 }
 
-//WeatherData::WeatherData(QObject *parent) : QObject{parent}
-//{
-//    getData();
-//}
-
-unsigned char WeatherData::getCurrentWeatherStatus()
+QString WeatherData::getCurrentWeatherStatus()
 {
     return currentWeatherStatus;
 }
@@ -27,24 +22,19 @@ int WeatherData::getCurrentDegrees()
 
 void WeatherData::getData()
 {
-    qDebug() << formFinalUrl();
-
     QNetworkRequest request(formFinalUrl());
-
-
-    qDebug() << "en";
-    qDebug() << formFinalUrl();
 
     networkManager->get(request);
 
     connect(networkManager, &QNetworkAccessManager::finished, [&](QNetworkReply *reply) {
-        qDebug() << QString::fromStdString(reply->readAll().toStdString());
         QJsonObject jsonObject = QJsonDocument::fromJson(reply->readAll()).object();
-        qDebug() << jsonObject["weather"].toString();
+        currentWeatherStatus =  jsonObject.value("weather")[0]["main"].toString();
+        currentDegrees = (int) jsonObject.value("main")["temp"].toDouble() - 273;
+
+        emit weatherChanged("currentWeatherStatus");
+        emit degreesChanged("currentDegrees");
+        qDebug() << currentWeatherStatus << currentDegrees;
     });
-
-    qDebug() << "en";
-
 
 }
 
@@ -61,7 +51,3 @@ QUrl WeatherData::formFinalUrl()
     return rUrl;
 }
 
-void WeatherData::slotFinished()
-{
-
-}

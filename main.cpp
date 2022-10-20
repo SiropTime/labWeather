@@ -2,8 +2,10 @@
 #include <QQmlApplicationEngine>
 #include <QDebug>
 #include <QSslSocket>
+#include <QtQuick/QQuickView>
+#include <QtQml/QQmlEngine>
+#include <QQmlContext>
 
-#include <iostream>
 
 #include "weatherdata.h"
 
@@ -15,6 +17,7 @@ int main(int argc, char *argv[])
 #endif
 
     QGuiApplication app(argc, argv);
+    QQuickView view;
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
@@ -25,12 +28,10 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
+    QQmlContext* ctx = engine.rootContext();
     WeatherData wd;
 
-
-
-    std::cout << "Maltsev Timofey 2022" << std::endl;
-
+    ctx->setContextProperty("weatherData", &wd);
 
     return app.exec();
 }

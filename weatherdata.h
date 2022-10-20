@@ -16,25 +16,21 @@
 
 #define uint8 unsigned char
 
-const uint8 SUNNY = 0;
-const uint8 RAIN = 1;
-const uint8 CLOUDY = 2;
-const uint8 PARTLY_CLOUDY = 3;
-const uint8 STORM = 4;
-const uint8 SNOW = 5;
-
 class WeatherData : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString currentWeatherStatus READ getCurrentWeatherStatus NOTIFY weatherChanged)
+    Q_PROPERTY(int currentDegrees READ getCurrentDegrees NOTIFY degreesChanged)
 public:
     WeatherData();
 //    explicit WeatherData(QObject *parent = nullptr);
-    uint8 getCurrentWeatherStatus();
+    QString getCurrentWeatherStatus();
     int getCurrentDegrees();
 
 private:
-    uint8 currentWeatherStatus = SUNNY;
+    QString currentWeatherStatus;
     int currentDegrees = 2;
+
     double latitude = 55.753192;
     double longitude = 37.622443;
 
@@ -49,9 +45,8 @@ private:
 
 
 signals:
-
-public slots:
-    void slotFinished();
+    void weatherChanged(QString data);
+    void degreesChanged(QString data);
 };
 
 #endif // WEATHERDATA_H

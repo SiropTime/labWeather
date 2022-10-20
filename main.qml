@@ -3,10 +3,18 @@ import QtQuick.Window 2.3
 
 
 Window {
+    id: mainWindow
     width: 640
     height: 480
     visible: true
     title: qsTr("SiropWeather")
+
+    maximumWidth: width
+    minimumWidth: width
+
+    maximumHeight: height
+    minimumHeight: height
+
 
     Rectangle {
         id: backgroundRectangle
@@ -43,7 +51,7 @@ Window {
             width: 180
             height: 50
             color: "#f1faee"
-            text: "Облачно"
+            text: weatherData.currentWeatherStatus
             font.pixelSize: 22
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
@@ -60,7 +68,7 @@ Window {
             width: 180
             height: 44
             color: "#edf6f9"
-            text: "+9°C"
+            text: "+%1°C".arg(weatherData.currentDegrees)
             font.letterSpacing: 2
             font.pixelSize: 24
             horizontalAlignment: Text.AlignHCenter
