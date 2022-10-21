@@ -46,6 +46,12 @@ void WeatherData::changeLocation(double lat, double lon)
     longitude = lon;
 }
 
+void WeatherData::update()
+{
+    QNetworkRequest request(formFinalUrl());
+    networkManager->get(request);
+}
+
 void WeatherData::getData()
 {
     QNetworkRequest request(formFinalUrl());

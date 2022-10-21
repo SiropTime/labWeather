@@ -2,10 +2,11 @@
 #include <QQmlApplicationEngine>
 #include <QDebug>
 #include <QSslSocket>
-#include <QtQuick/QQuickView>
 #include <QtQml/QQmlEngine>
 #include <QQmlContext>
-
+#include <QIcon>
+#include <QTimer>
+#include <QObject>
 
 #include "weatherdata.h"
 
@@ -17,7 +18,6 @@ int main(int argc, char *argv[])
 #endif
 
     QGuiApplication app(argc, argv);
-    QQuickView view;
     WeatherData wd;
 
     QQmlApplicationEngine engine;
@@ -29,10 +29,18 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
+
+    QIcon windowIcon(":/img/clear.ico");
+    app.setWindowIcon(windowIcon);
     QQmlContext* ctx = engine.rootContext();
 
-
     ctx->setContextProperty("weatherData", &wd);
+
+    QTimer timer;
+    QObject::connect(&timer, &QTimer::timeout, [&]() {
+        wd.update();
+    });
+    timer.start(60000);
 
     return app.exec();
 }

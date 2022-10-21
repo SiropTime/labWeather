@@ -12,5 +12,6 @@
         <file>img/snow.png</file>
         <file>img/storm.png</file>
         <file>img/windsock.png</file>
+        <file>img/clear.ico</file>
     </qresource>
 </RCC>

@@ -47,13 +47,13 @@ Window {
 
         Text {
             id: weatherStatusText
-            x: 170
+            x: 140
             y: 50
             width: 180
             height: 50
             color: "#f1faee"
             text: weatherData.currentWeatherStatus
-            font.pixelSize: 22
+            font.pixelSize: 25
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             font.weight: Font.DemiBold
@@ -64,14 +64,14 @@ Window {
 
         Text {
             id: degreesText
-            x: 170
+            x: 140
             y: 106
             width: 180
             height: 44
             color: "#edf6f9"
             text: "+%1°C".arg(weatherData.currentDegrees)
             font.letterSpacing: 2
-            font.pixelSize: 24
+            font.pixelSize: 26
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             font.family: "Monocraft"

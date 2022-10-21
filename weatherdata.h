@@ -38,8 +38,8 @@ public:
     QString getWeatherImagePath();
 
     void changeLocation(double lat, double lon);
+    void update();
 
-    void getData();
 
 private:
     QString currentWeatherStatus = "Clear";
@@ -59,7 +59,7 @@ private:
     QNetworkAccessManager* networkManager;
 
     void makeSignal();
-
+    void getData();
     QUrl formFinalUrl();
     QString makeDirectionFromDegrees(int windDegrees);
 
