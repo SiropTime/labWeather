@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
     QQuickView view;
+    WeatherData wd;
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
@@ -29,7 +30,7 @@ int main(int argc, char *argv[])
     engine.load(url);
 
     QQmlContext* ctx = engine.rootContext();
-    WeatherData wd;
+
 
     ctx->setContextProperty("weatherData", &wd);
 

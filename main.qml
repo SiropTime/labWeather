@@ -22,6 +22,7 @@ Window {
         y: 0
         width: 640
         height: 480
+        color: "#f1faee"
 
         gradient: Gradient {
             GradientStop { position: 0.0; color: "#006d77" }
@@ -36,7 +37,7 @@ Window {
             y: 50
             width: 100
             height: 100
-            source: "img/cloudy.png"
+            source: "qrc:/img/%1.png".arg(weatherData.weatherImagePath)  // .arg(weatherData.currentWeatherStatus)
             antialiasing: false
             autoTransform: false
             mipmap: false
@@ -80,7 +81,7 @@ Window {
         }
 
         Text {
-            id: text1
+            id: cityText
             x: 356
             y: 50
             width: 276
@@ -93,6 +94,105 @@ Window {
             layer.smooth: false
             font.weight: Font.Medium
             font.family: "Monocraft"
+        }
+
+        Image {
+            id: hygrometerImage
+            x: 40
+            y: 190
+            width: 100
+            height: 100
+            source: "img/hygrometer.png"
+            fillMode: Image.PreserveAspectFit
+        }
+
+        Text {
+            id: humidityText
+            x: 170
+            y: 190
+            width: 120
+            height: 40
+            color: "#f1faee"
+            text: qsTr("Влажность")
+            font.pixelSize: 25
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.family: "Monocraft"
+        }
+
+        Text {
+            id: humidityValue
+            x: 170
+            y: 236
+            width: 125
+            height: 40
+            color: "#f1faee"
+            text: qsTr("%1%".arg(weatherData.currentHumidity))
+            font.letterSpacing: 2
+            font.pixelSize: 24
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            antialiasing: true
+            leftPadding: 0
+            font.family: "Monocraft"
+        }
+
+        Image {
+            id: windsockImage
+            x: 301
+            y: 190
+            width: 100
+            height: 100
+            source: "img/windsock.png"
+            fillMode: Image.PreserveAspectFit
+        }
+
+        Text {
+            id: windText
+            x: 410
+            y: 190
+            width: 150
+            height: 40
+            color: "#f1faee"
+            text: qsTr("Ветер")
+            font.pixelSize: 25
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.family: "Monocraft"
+        }
+
+        Text {
+            id: windValue
+            x: 410
+            y: 270
+            width: 150
+            height: 20
+            color: "#f1faee"
+            text: qsTr("%1м/с".arg(weatherData.currentWindSpeed))
+            font.letterSpacing: 2
+            font.pixelSize: 22
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            leftPadding: 0
+            font.family: "Monocraft"
+            antialiasing: true
+        }
+
+        Text {
+            id: windDirection
+            x: 410
+            y: 230
+            width: 150
+            height: 34
+            color: "#f1faee"
+            text: qsTr(weatherData.currentWindDirection)
+            font.letterSpacing: 2
+            font.pixelSize: 22
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            leftPadding: 0
+            font.family: "Monocraft"
+            antialiasing: true
         }
     }
 }

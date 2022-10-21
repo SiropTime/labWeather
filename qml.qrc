@@ -1,5 +1,16 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>img/clear.png</file>
+        <file>img/clouds.png</file>
+        <file>img/hygrometer.png</file>
+        <file>img/night_clear.png</file>
+        <file>img/night_cloudy.png</file>
+        <file>img/night_rain.png</file>
+        <file>img/partly_cloudy.png</file>
+        <file>img/rain.png</file>
+        <file>img/snow.png</file>
+        <file>img/storm.png</file>
+        <file>img/windsock.png</file>
     </qresource>
 </RCC>

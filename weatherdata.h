@@ -19,17 +19,36 @@
 class WeatherData : public QObject
 {
     Q_OBJECT
+
     Q_PROPERTY(QString currentWeatherStatus READ getCurrentWeatherStatus NOTIFY weatherChanged)
+    Q_PROPERTY(QString weatherImagePath READ getWeatherImagePath NOTIFY weatherImageChanged)
     Q_PROPERTY(int currentDegrees READ getCurrentDegrees NOTIFY degreesChanged)
+    Q_PROPERTY(double currentWindSpeed READ getCurrentWindSpeed NOTIFY windSpeedChanged)
+    Q_PROPERTY(QString currentWindDirection READ getCurrentWindDirection NOTIFY windDirectionChanged)
+    Q_PROPERTY(int currentHumidity READ getCurrentHumidity NOTIFY humidityChanged)
+
 public:
     WeatherData();
-//    explicit WeatherData(QObject *parent = nullptr);
+
     QString getCurrentWeatherStatus();
     int getCurrentDegrees();
+    double getCurrentWindSpeed();
+    QString getCurrentWindDirection();
+    int getCurrentHumidity();
+    QString getWeatherImagePath();
+
+    void changeLocation(double lat, double lon);
+
+    void getData();
 
 private:
-    QString currentWeatherStatus;
+    QString currentWeatherStatus = "Clear";
     int currentDegrees = 2;
+    double currentWindSpeed = 0.62;
+    QString currentWindDirection = "Север";
+    int currentHumidity = 80;
+
+    QString weatherImagePath = "clouds";
 
     double latitude = 55.753192;
     double longitude = 37.622443;
@@ -39,14 +58,25 @@ private:
 
     QNetworkAccessManager* networkManager;
 
-    void getData();
+    void makeSignal();
 
     QUrl formFinalUrl();
+    QString makeDirectionFromDegrees(int windDegrees);
 
+    enum weatherStatuses {
+        clear,
+        clouds,
+        rain
+    };
 
+// Telling QT
 signals:
     void weatherChanged(QString data);
     void degreesChanged(QString data);
+    void windSpeedChanged(QString data);
+    void windDirectionChanged(QString data);
+    void humidityChanged(QString data);
+    void weatherImageChanged(QString data);
 };
 
 #endif // WEATHERDATA_H
