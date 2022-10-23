@@ -13,8 +13,10 @@
 #include <QDebug>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QtSql/QSqlQuery>
 
-#define uint8 unsigned char
+#include "database.h"
+
 
 class WeatherData : public QObject
 {
@@ -64,6 +66,7 @@ private:
     const QString apiKey = "e0051abe21f6d9196e19a4308b44c329";
 
     QNetworkAccessManager* networkManager;
+    db::Database dataBase;
 
     void makeSignal();
     void getData(); // Setuping get request and initializing everything first time

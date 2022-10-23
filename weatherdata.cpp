@@ -79,7 +79,11 @@ void WeatherData::getData()
                 // There's d or n in icon for day and night inc icon value ("04d" f.e.)
                jsonObject.value("weather")[0]["icon"].toString()[-1] == "n" ? true : false);
 
+        dataBase.insertNewData(currentDegrees, currentHumidity, currentPressure, currentWindSpeed);
+
         makeSignal(); // Notifying QT that we changed some fields that are used in GUI
+
+        qDebug() << jsonObject;
     });
 
 }
