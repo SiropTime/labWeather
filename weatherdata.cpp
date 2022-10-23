@@ -40,6 +40,11 @@ QString WeatherData::getWeatherImagePath()
     return weatherImagePath;
 }
 
+double WeatherData::getCurrentPressure()
+{
+    return currentPressure;
+}
+
 void WeatherData::changeLocation(double lat, double lon)
 {
     latitude = lat;
@@ -62,16 +67,19 @@ void WeatherData::getData()
         QJsonObject jsonObject = QJsonDocument::fromJson(reply->readAll()).object();
         currentWeatherStatus =  jsonObject.value("weather")[0]["description"].toString();
         currentWeatherStatus[0] = currentWeatherStatus[0].toUpper();
-        currentDegrees = static_cast<int>((jsonObject.value("main")["temp"].toDouble() - 272.1) + 0.5); // Adding half to round correctly -_-
+        currentDegrees = static_cast<int>((jsonObject.value("main")["temp"].toDouble() - 272.1) + 0.5); // Kelvins to Celsium
 
         makeDirectionFromDegrees(jsonObject.value("wind")["deg"].toInt());
         currentWindSpeed = jsonObject.value("wind")["speed"].toDouble();
 
         currentHumidity = jsonObject.value("main")["humidity"].toInt();
+        currentPressure = jsonObject.value("main")["pressure"].toInt() * 0.7501; // hPa to mm ртутного столба (не знаю, как на инглише)
 
-        makeSignal();
+        setWeatherImage(jsonObject.value("weather")[0]["main"].toString(),
+                // There's d or n in icon for day and night inc icon value ("04d" f.e.)
+               jsonObject.value("weather")[0]["icon"].toString()[-1] == "n" ? true : false);
 
-        qDebug() << jsonObject;
+        makeSignal(); // Notifying QT that we changed some fields that are used in GUI
     });
 
 }
@@ -85,6 +93,7 @@ void WeatherData::makeSignal()
     emit windDirectionChanged("currentWindDirection");
     emit humidityChanged("currentHumidity");
     emit weatherImageChanged("weatherImagePath");
+    emit pressureChanged("currentPressure");
 }
 
 QUrl WeatherData::formFinalUrl()
@@ -125,5 +134,25 @@ QString WeatherData::makeDirectionFromDegrees(int windDegrees)
 
     currentWindDirection = returnString;
     return returnString;
+}
+
+void WeatherData::setWeatherImage(QString weather, bool isNight)
+{
+
+    if (weather == "Rain" || weather == "Drizzle") {
+        weatherImagePath = !isNight ? "rain" : "night_rain";
+    } else if (weather == "Clouds") {
+        weatherImagePath = !isNight ? "clouds" : "night_clouds";
+    } else if (weather == "Thunderstorm") {
+        weatherImagePath = "storm";
+    } else if (weather == "Clear") {
+        weatherImagePath = !isNight ? "clear" : "night_clear";
+    } else if (weather == "Snow") {
+        weatherImagePath = "snow";
+    } else {
+        weatherImagePath = "fog";
+    }
+
+
 }
 

@@ -194,5 +194,33 @@ Window {
             font.family: "Monocraft"
             antialiasing: true
         }
+
+        Text {
+            id: pressureText
+            x: 40
+            y: 300
+            width: 155
+            height: 40
+            color: "#f1faee"
+            text: qsTr("Давление:")
+            font.pixelSize: 25
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.family: "Monocraft"
+        }
+
+        Text {
+            id: pressureValue
+            x: 201
+            y: 300
+            width: 337
+            height: 40
+            color: "#f1faee"
+            text: qsTr("%1 мм.рт.ст.".arg(weatherData.currentPressure))
+            font.pixelSize: 25
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.family: "Monocraft"
+        }
     }
 }

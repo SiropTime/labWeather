@@ -20,33 +20,40 @@ class WeatherData : public QObject
 {
     Q_OBJECT
 
+    // Fields that will be used in GUI. Setting field, method that returns it (getter) and signal method
     Q_PROPERTY(QString currentWeatherStatus READ getCurrentWeatherStatus NOTIFY weatherChanged)
     Q_PROPERTY(QString weatherImagePath READ getWeatherImagePath NOTIFY weatherImageChanged)
     Q_PROPERTY(int currentDegrees READ getCurrentDegrees NOTIFY degreesChanged)
     Q_PROPERTY(double currentWindSpeed READ getCurrentWindSpeed NOTIFY windSpeedChanged)
     Q_PROPERTY(QString currentWindDirection READ getCurrentWindDirection NOTIFY windDirectionChanged)
     Q_PROPERTY(int currentHumidity READ getCurrentHumidity NOTIFY humidityChanged)
+    Q_PROPERTY(double currentPressure READ getCurrentPressure NOTIFY pressureChanged)
 
 public:
     WeatherData();
 
+    /*
+     Actually in real development we don't need so much getters but for making signals there it is
+    */
     QString getCurrentWeatherStatus();
     int getCurrentDegrees();
     double getCurrentWindSpeed();
     QString getCurrentWindDirection();
     int getCurrentHumidity();
     QString getWeatherImagePath();
+    double getCurrentPressure();
 
     void changeLocation(double lat, double lon);
-    void update();
+    void update(); // Sending get request to update information
 
 
 private:
-    QString currentWeatherStatus = "Clear";
+    QString currentWeatherStatus = "Ясно";
     int currentDegrees = 2;
     double currentWindSpeed = 0.62;
     QString currentWindDirection = "Север";
     int currentHumidity = 80;
+    double currentPressure = 761.31;
 
     QString weatherImagePath = "clouds";
 
@@ -59,17 +66,12 @@ private:
     QNetworkAccessManager* networkManager;
 
     void makeSignal();
-    void getData();
-    QUrl formFinalUrl();
-    QString makeDirectionFromDegrees(int windDegrees);
+    void getData(); // Setuping get request and initializing everything first time
+    QUrl formFinalUrl(); // Forming query, adding key and returning need url
+    QString makeDirectionFromDegrees(int windDegrees); // Converting degrees in response to normal string direction to show in GUI
+    void setWeatherImage(QString weather, bool isNight); // Changing main weather image
 
-    enum weatherStatuses {
-        clear,
-        clouds,
-        rain
-    };
-
-// Telling QT
+// Telling QT that some fields are updated
 signals:
     void weatherChanged(QString data);
     void degreesChanged(QString data);
@@ -77,6 +79,7 @@ signals:
     void windDirectionChanged(QString data);
     void humidityChanged(QString data);
     void weatherImageChanged(QString data);
+    void pressureChanged(QString data);
 };
 
 #endif // WEATHERDATA_H
