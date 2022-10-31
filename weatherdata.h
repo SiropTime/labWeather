@@ -32,8 +32,11 @@ class WeatherData : public QObject
     Q_PROPERTY(double currentPressure READ getCurrentPressure NOTIFY pressureChanged)
 
 public:
+//    explicit WeatherData(QObject *parent = 0);
     WeatherData();
+    ~WeatherData();
 
+    void exit();
     /*
      Actually in real development we don't need so much getters but for making signals there it is
     */
@@ -66,7 +69,7 @@ private:
     const QString apiKey = "e0051abe21f6d9196e19a4308b44c329";
 
     QNetworkAccessManager* networkManager;
-    db::Database dataBase;
+    db::Database* dataBase;
 
     void makeSignal();
     void getData(); // Setuping get request and initializing everything first time

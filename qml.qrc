@@ -13,6 +13,5 @@
         <file>img/storm.png</file>
         <file>img/windsock.png</file>
         <file>img/clear.ico</file>
-        <file>weather.db</file>
     </qresource>
 </RCC>

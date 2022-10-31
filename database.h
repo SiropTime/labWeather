@@ -16,15 +16,13 @@ namespace db {
 
 class WeatherModel {
 public:
-    int id;
     int temperature;
     int humidity;
     int pressure;
     double windSpeed;
     QString time;
 
-    WeatherModel(int id, int temperature, int humidity, int pressure, double windSpeed, QString time = "now") {
-        this->id = id;
+    WeatherModel(int temperature, int humidity, int pressure, double windSpeed, QString time = "now") {
         this->temperature = temperature;
         this->humidity = humidity;
         this->pressure = pressure;
@@ -45,16 +43,21 @@ class Database : public QObject {
 
 public:
     Database();
+    explicit Database(QObject *parent = 0);
     ~Database();
+    void close();
 
-    bool insertNewData(int temperature, int humidity, int pressure, double windSpeed);
     WeatherModel getWeatherModel(QString time);
     std::vector<WeatherModel> getAllModels();
 
 private:
+    void createDatabase();
     std::map<QString, WeatherModel> weatherModels;
     QString dbPath;
     QSqlDatabase db;
+
+public slots:
+    bool insertNewData(int temperature, int humidity, int pressure, double windSpeed);
 };
 
 }

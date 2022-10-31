@@ -1,13 +1,30 @@
 #include "weatherdata.h"
 
+//WeatherData::WeatherData(QObject *parent) : QObject(parent)
+//{
+//    networkManager = new QNetworkAccessManager(this);
+//    dataBase = new db::Database(this);
+//    getData();
+//}
+
+WeatherData::~WeatherData()
+{
+
+}
+
 WeatherData::WeatherData()
 {
 
     qDebug() << longitude << latitude;
 
     networkManager = new QNetworkAccessManager(this);
-
+    dataBase = new db::Database(this);
     getData();
+}
+
+void WeatherData::exit()
+{
+    dataBase->close();
 }
 
 QString WeatherData::getCurrentWeatherStatus()
@@ -55,6 +72,7 @@ void WeatherData::update()
 {
     QNetworkRequest request(formFinalUrl());
     networkManager->get(request);
+    dataBase->getAllModels();
 }
 
 void WeatherData::getData()
@@ -65,6 +83,9 @@ void WeatherData::getData()
 
     connect(networkManager, &QNetworkAccessManager::finished, [&](QNetworkReply *reply) {
         QJsonObject jsonObject = QJsonDocument::fromJson(reply->readAll()).object();
+
+        qDebug() << jsonObject;
+
         currentWeatherStatus =  jsonObject.value("weather")[0]["description"].toString();
         currentWeatherStatus[0] = currentWeatherStatus[0].toUpper();
         currentDegrees = static_cast<int>((jsonObject.value("main")["temp"].toDouble() - 272.1) + 0.5); // Kelvins to Celsium
@@ -75,16 +96,20 @@ void WeatherData::getData()
         currentHumidity = jsonObject.value("main")["humidity"].toInt();
         currentPressure = jsonObject.value("main")["pressure"].toInt() * 0.7501; // hPa to mm ртутного столба (не знаю, как на инглише)
 
+        auto weatherImage = jsonObject.value("weather")[0]["icon"].toString();
         setWeatherImage(jsonObject.value("weather")[0]["main"].toString(),
                 // There's d or n in icon for day and night inc icon value ("04d" f.e.)
-               jsonObject.value("weather")[0]["icon"].toString()[-1] == "n" ? true : false);
+               weatherImage.at(weatherImage.size() - 1) == "n" ? true : false);
 
-        dataBase.insertNewData(currentDegrees, currentHumidity, currentPressure, currentWindSpeed);
+        // Inserting data in database but something broken in this
+        dataBase->insertNewData(currentDegrees, currentHumidity, currentPressure, currentWindSpeed);
+//        dataBase->getAllModels();
 
         makeSignal(); // Notifying QT that we changed some fields that are used in GUI
 
-        qDebug() << jsonObject;
+
     });
+
 
 }
 

@@ -36,12 +36,14 @@ int main(int argc, char *argv[])
 
     ctx->setContextProperty("weatherData", &wd);
 
-    // Updating data every minute
+    // Updating data every ten minutes
     QTimer timer;
     QObject::connect(&timer, &QTimer::timeout, [&]() {
         wd.update();
     });
-    timer.start(60000);
+    timer.start(600000);
+
+    wd.exit();
 
     return app.exec();
 }
