@@ -1,4 +1,4 @@
-QT += quick qml sql
+QT += quick qml sql charts
 
 CONFIG += c++11
 
@@ -14,10 +14,10 @@ SOURCES += \
 RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
+QML_IMPORT_PATH = F:\QT5\5.12.12\mingw73_64\qml
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH =
+QML_DESIGNER_IMPORT_PATH = F:\QT5\5.12.12\mingw73_64\qml\QtCharts
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

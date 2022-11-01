@@ -1,7 +1,6 @@
 #include "database.h"
 
 #include <QVariant>
-#include <QDateTime>
 #include <QDebug>
 #include <QDir>
 #include <QSqlError>
@@ -50,7 +49,6 @@ std::vector<db::WeatherModel> db::Database::getAllModels()
         const int timeIndex = record.indexOf("time");
 
         while (query.next()) {
-            qDebug() << query.value(temperatureIndex) << query.value(humidityIndex) << query.value(pressureIndex) << query.value(windSpeedIndex) << query.value(timeIndex);
             auto tempWeatherModel = db::WeatherModel(query.value(temperatureIndex).toInt(), query.value(humidityIndex).toInt(),
                                                      query.value(pressureIndex).toInt(), query.value(windSpeedIndex).toDouble(), query.value(timeIndex).toString());
             allWeatherModels.push_back(tempWeatherModel);
@@ -60,6 +58,18 @@ std::vector<db::WeatherModel> db::Database::getAllModels()
     }
 
     return allWeatherModels;
+}
+
+QVariantList db::Database::getDataForChart()
+{
+    QVariantList returnValues;
+    std::vector<db::WeatherModel> models = getAllModels();
+    for (auto const model : models) {
+        returnValues.append((QDateTime::fromString(model.time).toSecsSinceEpoch() - 1667174400) / 60);
+        returnValues.append(model.temperature);
+    }
+
+    return returnValues;
 }
 
 void db::Database::createDatabase()

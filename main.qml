@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Window 2.3
-
+import QtQuick.Controls 2.3
 
 Window {
     id: mainWindow
@@ -217,6 +217,53 @@ Window {
             height: 40
             color: "#f1faee"
             text: qsTr("%1 мм.рт.ст.".arg(weatherData.currentPressure))
+            font.pixelSize: 25
+
+            font.family: "Monocraft"
+        }
+
+        Button {
+            id: goChartsButton
+            x: 8
+            y: 432
+            width: 160
+            height: 40
+            visible: true
+            text: qsTr("Перейти")
+
+            background: Rectangle {
+                color: "#006d77"
+                radius: 15.0
+            }
+
+            contentItem: Text {
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                color: "#f1faee"
+                text: goChartsButton.text
+                font.letterSpacing: 0.3
+                font.pointSize: 10
+                font.bold: false
+                font.capitalization: Font.AllUppercase
+                font.family: "Monocraft"
+            }
+
+            onClicked: {
+                console.log("Created window with charts...");
+                var component = Qt.createComponent("charts.qml")
+                var window = component.createObject("chartWindow")
+                window.show()
+            }
+        }
+
+        Text {
+            id: goChartsText
+            x: 174
+            y: 432
+            width: 466
+            height: 40
+            color: "#006d77"
+            text: qsTr("Посмотреть график изменений")
             font.pixelSize: 25
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter

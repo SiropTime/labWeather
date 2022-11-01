@@ -47,6 +47,7 @@ public:
     int getCurrentHumidity();
     QString getWeatherImagePath();
     double getCurrentPressure();
+    db::Database* getDataBase();
 
     void changeLocation(double lat, double lon);
     void update(); // Sending get request to update information

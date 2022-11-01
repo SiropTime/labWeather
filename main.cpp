@@ -1,4 +1,4 @@
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QDebug>
 #include <QSslSocket>
@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     WeatherData wd;
 
     QQmlApplicationEngine engine;
@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
     QQmlContext* ctx = engine.rootContext();
 
     ctx->setContextProperty("weatherData", &wd);
+    ctx->setContextProperty("dataBase", wd.getDataBase());
 
     // Updating data every ten minutes
     QTimer timer;

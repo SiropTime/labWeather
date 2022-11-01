@@ -62,6 +62,11 @@ double WeatherData::getCurrentPressure()
     return currentPressure;
 }
 
+db::Database *WeatherData::getDataBase()
+{
+    return dataBase;
+}
+
 void WeatherData::changeLocation(double lat, double lon)
 {
     latitude = lat;
@@ -72,7 +77,6 @@ void WeatherData::update()
 {
     QNetworkRequest request(formFinalUrl());
     networkManager->get(request);
-    dataBase->getAllModels();
 }
 
 void WeatherData::getData()

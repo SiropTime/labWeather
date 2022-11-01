@@ -6,6 +6,8 @@
 
 #include <QString>
 #include <QObject>
+#include <QVariantList>
+#include <QDateTime>
 
 #include <vector>
 #include <map>
@@ -28,7 +30,7 @@ public:
         this->pressure = pressure;
         this->windSpeed = windSpeed;
         if (time == "now") {
-
+            this->time = QDateTime::currentDateTime().toString();
         } else {
             this->time = time;
         }
@@ -50,14 +52,16 @@ public:
     WeatherModel getWeatherModel(QString time);
     std::vector<WeatherModel> getAllModels();
 
+
 private:
     void createDatabase();
-    std::map<QString, WeatherModel> weatherModels;
+//    std::vector<WeatherModel> weatherModels;s
     QString dbPath;
     QSqlDatabase db;
 
 public slots:
     bool insertNewData(int temperature, int humidity, int pressure, double windSpeed);
+    Q_INVOKABLE QVariantList getDataForChart();
 };
 
 }
